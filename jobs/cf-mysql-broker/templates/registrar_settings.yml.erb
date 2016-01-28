@@ -6,7 +6,7 @@ message_bus_servers:
 <% end %>
 external_host: <%= p('cf_mysql.external_host') %>
 external_ip: <%= spec.networks.send(p('network_name')).ip %>
-port: 80
+port: <%= p('cf_mysql.broker.nginx.port') %>
 health_checker:
     name: script
     interval_in_seconds: 10
