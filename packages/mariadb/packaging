@@ -1,6 +1,7 @@
 # abort script on any command that exits with a non zero value
 set -e
 
+CPUS=$(grep -c ^processor /proc/cpuinfo)
 MARIADB_VERSION=10.0.23
 
 tar xzf mariadb/mariadb-galera-${MARIADB_VERSION}.tar.gz
@@ -20,7 +21,7 @@ tar xzf mariadb/mariadb-galera-${MARIADB_VERSION}.tar.gz
   # Go Agent cannot handle more than 10MB output, so trim it
   #
   set +e
-  make -j 3 > build.out 2> build.err
+  make -j${CPUS} > build.out 2> build.err
   BUILD_EXIT_CODE=$?
   set -e
 

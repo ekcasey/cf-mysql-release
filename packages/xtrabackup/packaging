@@ -2,6 +2,7 @@
 set -e
 set -x
 
+CPUS=$(grep -c ^processor /proc/cpuinfo)
 XTRABACKUP_VERSION=2.2.10
 PREFIX=${BOSH_INSTALL_TARGET}
 
@@ -15,7 +16,7 @@ tar xzf xtrabackup/socat-1.7.2.4.tar.gz
   set -e
   cd socat-1.7.2.4
   ./configure --prefix=$PREFIX
-  make
+  make -j${CPUS}
   make install prefix=$PREFIX
 )
 
@@ -25,7 +26,7 @@ tar xzf xtrabackup/libdbi-perl_1.630.orig.tar.gz
   set -e
   cd DBI-1.630
   perl Makefile.PL PREFIX=$PREFIX
-  make
+  make -j${CPUS}
   make install prefix=$PREFIX
 )
 
@@ -35,19 +36,19 @@ tar xzf xtrabackup/libdbd-mysql-perl_4.025.orig.tar.gz
   set -e
   cd DBD-mysql-4.025
   perl -I${BOSH_INSTALL_TARGET}/lib/perl/5.18.2/ Makefile.PL PREFIX=$PREFIX
-  make
+  make -j${CPUS}
   make install prefix=$PREFIX
 )
 
 # Install Xtrabackup compilation dependencies
-# autoconf
 
+# autoconf
 tar xzf xtrabackup/autoconf-2.65.tar.gz
 (
   set -e
   cd autoconf-2.65
   autoconf_dir=$PREFIX/share/autoconf ./configure --prefix=$PREFIX
-  make
+  make -j${CPUS}
   make install prefix=$PREFIX
 )
 
@@ -57,7 +58,7 @@ tar xzf xtrabackup/automake-1.14.1.tar.gz
   set -e
   cd automake-1.14.1
   ./configure --prefix=$PREFIX
-  make
+  make -j${CPUS}
   make install prefix=$PREFIX
 )
 
@@ -67,7 +68,7 @@ tar xzf xtrabackup/libtool-2.4.2.tar.gz
   set -e
   cd libtool-2.4.2
   ./configure --prefix=$PREFIX
-  make
+  make -j${CPUS}
   make install prefix=$PREFIX
 )
 
@@ -77,7 +78,6 @@ tar xzf xtrabackup/libaio_0.3.110.orig.tar.gz
   set -e
   cd libaio-0.3.110
   make install
-
 )
 
 tar xzf xtrabackup/percona-xtrabackup-percona-xtrabackup-${XTRABACKUP_VERSION}.tar.gz
@@ -89,7 +89,7 @@ tar xzf xtrabackup/percona-xtrabackup-percona-xtrabackup-${XTRABACKUP_VERSION}.t
       -DBUILD_CONFIG=xtrabackup_release \
       -DCMAKE_INSTALL_PREFIX=${BOSH_INSTALL_TARGET} \
       -DWITH_MAN_PAGES=OFF
-  make -j4
+  make -j${CPUS}
   make install
 )
 
