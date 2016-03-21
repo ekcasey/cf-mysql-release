@@ -2,6 +2,7 @@
 set -e
 
 GALERA_VERSION=25.3.9
+CPUS=$(grep -c ^processor /proc/cpuinfo)
 
 export HOME=/var/vcap/data
 cd galera
@@ -24,7 +25,7 @@ PATH=$PATH:/var/vcap/packages/python/bin
 # Go Agent cannot handle more than 10MB output, so trim it
 #
 set +e
-/var/vcap/packages/scons/bin/scons > build.out 2> build.err
+/var/vcap/packages/scons/bin/scons -j${CPUS} > build.out 2> build.err
 BUILD_EXIT_CODE=$?
 set -e
 
