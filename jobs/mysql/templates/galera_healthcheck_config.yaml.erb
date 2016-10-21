@@ -1,4 +1,7 @@
 ---
+<% unless p('cf_mysql.mysql.galera_healthcheck.ip').empty? %>
+Host: <%= p('cf_mysql.mysql.galera_healthcheck.ip') %>
+<% end %>
 Port: <%= p('cf_mysql.mysql.galera_healthcheck.port') %>
 PidFile: '/var/vcap/sys/run/galera-healthcheck/galera-healthcheck.pid'
 MysqldPath: '/var/vcap/packages/mariadb/bin/mysqld'

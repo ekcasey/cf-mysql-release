@@ -105,6 +105,9 @@ properties:
     description: 'Username used by the sidecar endpoints for Basic Auth'
   cf_mysql.mysql.galera_healthcheck.endpoint_password:
     description: 'Password used by the sidecar endpoints for Basic Auth'
+  cf_mysql.mysql.galera_healthcheck.ip:
+    description: 'IP used by sidecar process to listen on'
+    default: ""
   cf_mysql.mysql.galera_healthcheck.port:
     description: 'Port used by sidecar process to listen on'
     default: 9200
