@@ -79,10 +79,6 @@ case $1 in
     # Start syslog forwarding
     /var/vcap/packages/syslog_aggregator/setup_syslog_forwarder.sh $MARIADB_JOB_DIR/config
 
-    mkdir -p $LOG_DIR
-    chown vcap:vcap $LOG_DIR
-    touch $LOG_FILE
-    chown vcap:vcap $LOG_FILE
     date >> $LOG_FILE 2>> $LOG_FILE
 
     <% if_p('cf_mysql.mysql.server_audit_events') do |_| %>
@@ -101,17 +97,6 @@ case $1 in
       export DISABLE_SST=0
       rm ${enable_sst_marker}
     fi
-
-    if ! test -d ${datadir}; then
-      export DISABLE_SST=0
-      log "start script: making ${datadir} and running /var/vcap/packages/mariadb/scripts/mysql_install_db"
-      mkdir -p ${datadir}
-      /var/vcap/packages/mariadb/scripts/mysql_install_db \
-             --basedir=/var/vcap/packages/mariadb \
-             --user=vcap \
-             --datadir=${datadir} >> $LOG_FILE 2>> $LOG_FILE
-    fi
-    chown -R vcap:vcap ${datadir}
 
     cd $MARIADB_CTRL_PACKAGE
 

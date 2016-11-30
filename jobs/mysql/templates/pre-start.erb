@@ -1,0 +1,23 @@
+#!/bin/bash -e
+
+set -e
+
+datadir=/var/vcap/store/mysql
+LOG_DIR=/var/vcap/sys/log/mysql
+LOG_FILE=$LOG_DIR/mariadb_ctrl.combined.log
+
+mkdir -p $LOG_DIR
+chown vcap:vcap $LOG_DIR
+touch $LOG_FILE
+chown vcap:vcap $LOG_FILE
+
+if ! test -d ${datadir}; then
+  export DISABLE_SST=0
+  echo "start script: making ${datadir} and running /var/vcap/packages/mariadb/scripts/mysql_install_db"
+  mkdir -p ${datadir}
+  /var/vcap/packages/mariadb/scripts/mysql_install_db \
+         --basedir=/var/vcap/packages/mariadb \
+         --user=vcap \
+         --datadir=${datadir} >> $LOG_FILE 2>> $LOG_FILE
+fi
+chown -R vcap:vcap ${datadir}

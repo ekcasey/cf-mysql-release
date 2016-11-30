@@ -16,6 +16,7 @@ templates:
   cluster_health_logger_config.yml.erb: config/cluster_health_logger_config.yml
   cluster_health_logger_setup.sql.erb: config/cluster_health_logger_setup.sql
   mysql_audit_logs.logrotate.erb: config/mysql_audit_logs.logrotate
+  pre-start.erb: bin/pre-start
 
 packages:
 - xtrabackup
